@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginSVG from "../images/LoginHome.svg"
+import LoginSVG from "../../images/LoginHome.svg"
 
 const LoginCard = () => {
   return (

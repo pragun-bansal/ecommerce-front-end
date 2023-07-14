@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductsCard from './ProductsCard'
+import ProductsCard from './AllProductsCard'
 
 const ProductsGrid = () => {
   return (

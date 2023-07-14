@@ -1,7 +1,7 @@
 import React from 'react'
-import RatingGraph from '../RatingSystem/RatingGraph'
-import ProductsCard from './ProductsCard'
-import ProductsGrid from './ProductsGrid'
+import RatingGraph from '../../Components/RatingSystem/RatingGraph'
+import ProductsCard from './AllProductsCard'
+import ProductsGrid from './AllProductsGrid'
 
 const ProductsPage = () => {
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import Products1 from '../images/Products1.jpg'
+import Products1 from '../../images/Products1.jpg'
+import { Link } from 'react-router-dom';
 
 const ProductsCard = () => {
 const [hover,setHover] = useState(false);
@@ -10,13 +11,13 @@ const [hover,setHover] = useState(false);
 
 
 <div onMouseOver={()=>{console.log("over");setHover(true)}} onMouseOut={()=>{setHover(false)}} class="w-full  max-w-xl rounded-lg  p-[2%]">
-    <a href="#">
+    <Link to="/products">
         <img class="w-[460px] lg:h-[28vw] h-[45vw] object-cover" src={hover?'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20':Products1} alt="product image" />
-    </a>
+    </Link>
     <div class="px-5 pb-5">
-        <a href="#">
+        <Link to="/products">
             <h5 class="text-sm lg:text-md text-center font-semibold tracking-tight text-gray-900 ">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
-        </a>
+        </Link>
         <div class="lg:mx-[24%] xl:mx-[31%]">
             <div class="flex items-center">
             
