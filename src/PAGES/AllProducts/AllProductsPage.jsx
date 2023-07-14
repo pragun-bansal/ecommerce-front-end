@@ -7,7 +7,7 @@ const ProductsPage = () => {
   return (
     <div>
         <ProductsGrid />
-        <RatingGraph />
+        {/* <RatingGraph /> */}
     </div>
   )
 }
