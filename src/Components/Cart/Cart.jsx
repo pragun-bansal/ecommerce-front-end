@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { cartActions } from "../../Redux/Slices/CartSlice";
+import { fetchCartData } from "../../Redux/Store/cart-actions";
 
 const Cart=({show,setShow})=> {
+    const cartStateRedux = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+    const token = cookies.access_token;
+    let isAuthenticated=true;
+    if(token===null)isAuthenticated=false;
 
 
+
+
+    // useEffect(() => {
+    //     if (prodStateRedux.products.length === 0) {
+    //       dispatch(fetchProductData());
+    //     }
+    //   }, [dispatch]);
+    
+    //   useEffect(() => {
+    //     if (isAuthenticated === true && cartStateRedux.changed === false) {
+    //       dispatch(fetchCartData());
+    //     }
+    //   }, [dispatch, isAuthenticated]);
 
 
     return (
@@ -45,7 +70,7 @@ const Cart=({show,setShow})=> {
                                             <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
                                             <div className="flex items-center justify-between pt-5 pr-6">
                                                 <div className="flex itemms-center">
-                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to wishlist</p>
                                                     <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
                                                 </div>
                                                 <p className="text-base font-black leading-none text-gray-800">$9,000</p>
@@ -71,7 +96,7 @@ const Cart=({show,setShow})=> {
                                             <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
                                             <div className="flex items-center justify-between pt-5 pr-6">
                                                 <div className="flex itemms-center">
-                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to wishlist</p>
                                                     <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
                                                 </div>
                                                 <p className="text-base font-black leading-none text-gray-800">$9,000</p>
@@ -97,7 +122,7 @@ const Cart=({show,setShow})=> {
                                             <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
                                             <div className="flex items-center justify-between pt-5 pr-6">
                                                 <div className="flex itemms-center">
-                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                    <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to wishlist</p>
                                                     <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
                                                 </div>
                                                 <p className="text-base font-black leading-none text-gray-800">$9,000</p>

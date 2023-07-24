@@ -15,11 +15,25 @@ import LoginHome from './PAGES/Login/LoginHome';
 import ProductPage from './PAGES/Product/ProductPage';
 import WishListPage from './PAGES/WishList/WishListPage';
 import Cart from './Components/Cart/Cart';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {ToastContainer,toast} from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
+import { cartActions } from './Redux/Slices/CartSlice';
+
 
 
 
 function App() {
+
+
+
+
+  const {data:user}= useSelector((state)=>state.User);
+// if(user && user._id){ 
+//   // console.log(user);
+//   localStorage.setItem("user",JSON.stringify(user));}
 
   const [show, setShow] = useState(false);
 

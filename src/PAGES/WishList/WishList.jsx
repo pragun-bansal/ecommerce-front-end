@@ -1,7 +1,19 @@
 
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const WishList = () => {
+    const navigate = useNavigate();
+    let isAuthenticated = true;
+    const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+    const token = cookies.access_token;
+    if(token===null) isAuthenticated = false;
+  
+    if (!isAuthenticated) {
+        console.log("navigating");
+      navigate("/login");
+    }
     const [show1, setshow1] = useState(true);
     const [show2, setshow2] = useState(false);
     const [show3, setshow3] = useState(false);
