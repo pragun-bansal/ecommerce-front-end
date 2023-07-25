@@ -80,8 +80,13 @@ const Wishlist = createSlice({
       }
     },
     removeItemFromWishlist(state, action) {
+      if(state.items.length==1){
+        state.items=[]
+      }
+      else{
         const newItem= action.payload;
         state.items = state.items.filter((item) => item.productId._id=== newItem.productId._id);
+      }
         // const wishlistTotal = state.items.reduce((total, item) => total + item.qty * item.productPrice, 0);
         // state.totalCost = wishlistTotal;
     },

@@ -18,7 +18,12 @@ const WishList = () => {
 
 
     const handleRemove=async(product)=>{
-        dispatch(wishlistActions.removeItemFromWishlist(product))
+        dispatch(wishlistActions.removeItemFromWishlist(product));
+        try{
+            const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/deleteItem`,{productId:product.productId._id,token:token})
+        }catch(err){
+            console.log(err);
+        }
     }
     const handleAddToCart=async(product)=>{
         dispatch(cartActions.addItemToCart(product))
@@ -116,9 +121,9 @@ const WishList = () => {
                         </div>
                     </div>
                             )
-                        }):<div className="mt-[30vh] mx-auto text-center text-[40px]">No Items in the wishlist</div>
+                        }):<div className="absolute translate-x-[-10vw] translate-y-[-30vh] mt-[30vh] mx-auto text-center text-[40px]">No Items in the wishlist</div>
                     }
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                         <div className="relative">
                             <img className="hidden lg:block" src="https://i.ibb.co/WVySXBL/Rectangle-24.png" alt="watch" />
                             <img className="hidden sm:block lg:hidden" src="https://i.ibb.co/9sqGrR6/Rectangle-24-1.png" alt="watch" />
@@ -267,7 +272,7 @@ const WishList = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
