@@ -11,7 +11,7 @@ const CardsGrid = () => {
             {
               Categories.map((item,index)=>{
                 return(
-                  <Link to={`/allProducts/${item.name.toLocaleLowerCase()}`}><CategoryCards name={item.name} url={item.imageUrl}/></Link>
+                  <Link to={`/allProducts/${item.name.toLocaleLowerCase()}/newArrivals`}><CategoryCards name={item.name} url={item.imageUrl}/></Link>
                 )
               })
             }
