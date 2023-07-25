@@ -2,6 +2,7 @@ import React,{useDebugValue, useState} from 'react'
 import LoginSVG from "../../images/LoginHome.svg"
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { loginUser } from '../../Redux/Slices/UserSlice';
@@ -22,8 +23,7 @@ const LoginCard = () => {
   });
 
   const [register,setRegister] = useState(false);
-
-  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+  const token  = localStorage.getItem("token")
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,6 +52,24 @@ const LoginCard = () => {
 
   const handleSubmit=async (e)=>{
     // e.preventDefault();
+    if(token){
+      localStorage.clear("token");
+      localStorage.clear("user");
+      toast.success(`Come Back Soon`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      navigate("/login");
+    }
+    else{
+
+    
     if (register) {
       try {
         // console.log(regCred)
@@ -71,7 +89,7 @@ const LoginCard = () => {
         setRegister(!register);
       }
         else{
-            toast.error(res.data.message, {
+            toast.error(res.message, {
                 position: "top-center",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -137,6 +155,7 @@ const LoginCard = () => {
     })
     }
   }
+  }
 
 
 
@@ -171,7 +190,7 @@ const LoginCard = () => {
             </div>
         {/* <form> */}
           {/* <!-- Username input --> */}
-         { register?<div>
+         { token?<>Already Leaving?</>:register?<div>
           <div class="relative mb-6" data-te-input-wrapper-init>
             <input
               type="text"
@@ -296,10 +315,10 @@ const LoginCard = () => {
             </div> */}
 
             {/* <!-- Forgot password link --> */}
-            <a
+           {token?<></>: <a
               href="#!"
               class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 "
-              >Forgot password?</a>
+              >Forgot password?</a>}
           </div>
 
           {/* <!-- Submit button --> */}
@@ -308,7 +327,7 @@ const LoginCard = () => {
             class="inline-block w-full rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-black shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] "
             data-te-ripple-init
             data-te-ripple-color="light">
-            {!register?"Log in":"Sign in"}
+            {token?"log Out":!register?"Log in":"Sign in"}
           </button>
 
           {/* <!-- Divider --> */}

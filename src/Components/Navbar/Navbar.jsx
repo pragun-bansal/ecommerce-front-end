@@ -85,13 +85,13 @@ export const Navbar = ({ show, setShow }) => {
                       {Categories.map((item,index)=>{
                         return(
                           <li>
-                        <Link to="/allProducts" class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
+                        <Link to={`/allProducts/${item.name.toLocaleLowerCase()}`} class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
                       </li>
                         )
                       })}
                       
                       <li>
-                        <Link to="/allProducts" class="block px-4 py-2 hover:bg-gray-100 ">All</Link>
+                        <Link to="/allProducts/all" class="block px-4 py-2 hover:bg-gray-100 ">All</Link>
                       </li>
                     </ul>
                     {/* <div class="py-1">

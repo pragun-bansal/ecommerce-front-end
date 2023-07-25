@@ -10,6 +10,8 @@ root.render(
   <Provider store={store}>
   <React.StrictMode>
     <App />
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" ></script>
   </React.StrictMode>
   </Provider>
+  
 );

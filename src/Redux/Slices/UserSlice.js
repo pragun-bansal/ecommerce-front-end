@@ -18,9 +18,9 @@ export const STATUSES = Object.freeze({
 export const loadState = () => {
   try {
     const serialState = localStorage.getItem('user');
-    console.log(JSON.parse(serialState));
+    // console.log(JSON.parse(serialState));
     if (serialState === null) {
-      console.log("null ho gya")
+      // console.log("null ho gya")
       return {};
     }
     return JSON.parse(serialState);
@@ -32,7 +32,7 @@ export const loadState = () => {
 
 
 const initialState = loadState();
-console.log(initialState);
+// console.log(initialState);
 
 const User = createSlice({
     name:'User',
@@ -54,7 +54,7 @@ const User = createSlice({
             state.data=action.payload
         },
         loginUser(state,action){
-            console.log(action.payload)
+            // console.log(action.payload)
             state=action.payload
         },
         fetchUser(state,action){

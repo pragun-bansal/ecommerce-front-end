@@ -1,6 +1,7 @@
 import React from 'react'
 import CategoryCards from './CategoryCards'
 import { Categories } from '../Categories'
+import { Link } from 'react-router-dom'
 // const url  ='https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
 const CardsGrid = () => {
   return (
@@ -10,7 +11,7 @@ const CardsGrid = () => {
             {
               Categories.map((item,index)=>{
                 return(
-                  <CategoryCards name={item.name} url={item.imageUrl}/>
+                  <Link to={`/allProducts/${item.name.toLocaleLowerCase()}`}><CategoryCards name={item.name} url={item.imageUrl}/></Link>
                 )
               })
             }

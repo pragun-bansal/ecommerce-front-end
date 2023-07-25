@@ -3,16 +3,97 @@ import { Carousel } from "react-responsive-carousel";
 import Poster11 from "../../images/Poster1.png"
 import { CareGuide, ReturnPolicy, Terms } from './InfoJSON';
 import CartSVG from "../../svg/shopping-cart.png";
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../Redux/Slices/CartSlice';
+import { wishlistActions } from '../../Redux/Slices/WishlistSlice';
+import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const ProductDescription = () => {
+const ProductDescription = ({product}) => {
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
+    const token = localStorage.getItem("token");
+    const dispatch=useDispatch();
+    const handleAddToCart=async(product)=>{
+        if(!token){
+            toast.error("login to continue", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+        }
+        else{
 
+            let newProduct ={};
+            newProduct.qty=1;
+            newProduct._id=product._id 
+            newProduct.productId =product
+            dispatch(cartActions.addItemToCart(newProduct))
+            setshowlottie(true);
+            setTimeout(()=>{
+                setshowlottie(false);
+    
+            },3000)
+            try{
+                const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/cart/addItem`,{productId:product._id,qty:1,token:token})
+            }catch(err){
+                console.log(err);
+            }
+        }
+    }
+
+    const handleAddToWishList=async(product)=>{
+        if(!token){
+            toast.error("login to continue", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+        }
+        else{
+            let newProduct ={};
+            newProduct.qty=1;
+            newProduct._id=product._id 
+            newProduct.productId =product
+            dispatch(wishlistActions.addItemToWishlist(newProduct))
+            setshowlottie(true);
+            try{
+                const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/addItem`,{productId:product._id,qty:1,token:token})
+            }catch(err){
+                console.log(err);
+            }
+            setTimeout(()=>{
+                setshowlottie(false);
+            },3000)
+        }
+    }
+
+    const [showlottie, setshowlottie] = useState(false);
 
     return (
         <div>
-
+            {showlottie?<div className="fixed z-50 md:left-[17vw]  xl:left-[40vw] translate-y-[0vh]">
+    <Player
+  autoplay
+  loop
+  src="https://lottie.host/a32aa65f-d8fd-445b-917d-6e9cd0049c17/waCAyqiy9U.json"
+  style={{ height:'50vh' }}
+>
+  <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
+</Player>
+    </div>:<></>}
 
 
             <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">
@@ -28,25 +109,17 @@ const ProductDescription = () => {
                         className="w-[100%] h-[100vh] md:h-[70vh] xl:h-[100vh] mb-[30px] align-middle object-scale-down"
                     >
                         <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
+                            <img src={product.main_image1} alt="image1" className="object-scale-down" />
                         </div>
-                        {/* <div>
-                            <img src="https://imgshopimages.lbb.in/catalog/product/b/r/browntote1.jpg" alt="image1" className="object-scale-down" />
-                        </div> */}
                         <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
+                            <img src={product.main_image2} alt="image2" className="object-scale-down" />
                         </div>
-                        {/* <div>
-                            <img src="https://imgshopimages.lbb.in/catalog/product/b/r/browntote1.jpg" alt="image1" className="object-scale-down" />
-                        </div> */}
-                        <div>
-                            <img src={Poster11} alt="image1" className=" object-contain" />
-                        </div>
-                        <div>
-                            <img src={Poster11} alt="image1" className="object-contain" />
-                        </div>
+                        {
+                            product.all_images?.map(()=>{
+                                return
+                            })
+                        }
                     </Carousel>
-                    {/* <img className="mt-6 w-full" alt="img of a girl posing" src="https://i.ibb.co/qxkRXSq/component-image-two.png" /> */}
                 </div>
                 <div className="md:hidden">
                     <Carousel
@@ -75,7 +148,7 @@ const ProductDescription = () => {
                 </div>
                 <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 md:overflow-y-auto  md:h-[70vh] xl:h-[100vh]">
                     <div className="border-b border-gray-200 pb-6">
-                        <p className="text-sm leading-none text-gray-600">Balenciaga Fall Collection</p>
+                        <p className="text-sm leading-none text-gray-600">{product.tagline}</p>
                         <h1
                             className="
 							lg:text-2xl
@@ -87,7 +160,7 @@ const ProductDescription = () => {
 							mt-2
 						"
                         >
-                            Balenciaga Signature Sweatshirt
+                           {product.name}
                         </h1>
                     </div>
                     <div className="py-4 border-b border-gray-200 flex items-center justify-between">
@@ -143,9 +216,24 @@ const ProductDescription = () => {
                         </svg>
                         Check availability in store
                     </button> */}
+                    <h1
+                            className="
+							lg:text-2xl
+							text-xl
+							font-semibold
+							lg:leading-6
+							leading-7
+							text-gray-800
+							mt-2
+                            					"
+                        >
+                           ₹{product.price}
+                        </h1>
                     <div className='flex flex-col-2 justify-between'>
+                    
 
                     <button
+                        onClick={()=>{handleAddToCart(product)}}
                         className="
 						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 mt-4 mr-2
 						text-base
@@ -164,6 +252,7 @@ const ProductDescription = () => {
                         Add to Cart
                     </button>
                     <button
+                        onClick={()=>{handleAddToWishList(product)}}
                         className="
 						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 mt-4 ml-2
 						text-base
@@ -184,7 +273,7 @@ const ProductDescription = () => {
                     </button>
                     </div>
                     <div>
-                    description
+                    {product.description}
                         {/* <p className="xl:pr-48 text-base lg:leading-tight leading-normal text-gray-600 mt-7">It is a long established fact that a reader will be distracted by thereadable content of a page when looking at its layout. The point of usingLorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
                         <p className="text-base leading-4 mt-7 text-gray-600">Product Code: 8BN321AF2IF0NYA</p>
                         <p className="text-base leading-4 mt-4 text-gray-600">Length: 13.2 inches</p>
