@@ -13,6 +13,7 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/product/productById`, { productId });
+        console.log(response.data.data)
         setProduct(response.data.data); // Update the product state with the fetched data
       } catch (error) {
         console.log(error);
@@ -25,14 +26,15 @@ const ProductPage = () => {
     }
   }, [productId]); // Use the productId as a dependency for useEffect
 
+
   return (
     <div>
       {product ? (
         <div>
           <ProductDescription product={product} />
           <div className='xl:flex'>
-            <RatingGraph />
-            <ProductReviews />
+            <RatingGraph product={product}/>
+            <ProductReviews product={product}/>
           </div>
         </div>
       ) : (
