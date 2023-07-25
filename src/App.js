@@ -55,7 +55,7 @@ function App() {
     </div>
     <Routes>
     <Route exact path="/" element={<Home />} />
-    <Route exact path="/allproducts/:category" element={<AllProductsPage />} />
+    <Route exact path="/allproducts/:category/:sortBy" element={<AllProductsPage />} />
     <Route path="/products/:productId" element={<ProductPage />} />
     <Route exact path="/login" element={user && user.data?<Home/>:<LoginHome />} />
     <Route exact path="/wishlist" element={<WishListPage />} />
