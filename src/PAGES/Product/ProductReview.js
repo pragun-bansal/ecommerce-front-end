@@ -9,8 +9,8 @@ const ProductReviews = ({ product }) => {
     const [writeReview, setWriteReview] = useState(false);
     const [newReview,setNewReview] = useState({
         rating:undefined,
-        title:undefined,
-        comment:undefined
+        title:"",
+        comment:""
     })
     const [menu, setMenu] = useState(true);
     const [menu1, setMenu1] = useState(false);
