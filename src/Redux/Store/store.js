@@ -4,6 +4,16 @@ import AllProductSlice from "../Slices/AllProductSlice";
 import cartSlice from "../Slices/CartSlice";
 import User from "../Slices/UserSlice"
 
+const loadState = () => {
+    try {
+      const serialState = localStorage.getItem("user");
+      return serialState ? JSON.parse(serialState) : {};
+    } catch (err) {
+      console.log(err);
+      return {};
+    }
+  };
+
 const  store = configureStore({
     reducer:{
         User:User,
@@ -11,6 +21,11 @@ const  store = configureStore({
         AllProducts:AllProductSlice,
         WishList:WishList
     },
+    preloadedState: {
+        User:{
+            data:loadState(),
+        }
+    }
 })
 
 export default store
