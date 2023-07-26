@@ -7,8 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { loginUser } from '../../Redux/Slices/UserSlice';
 import { useDispatch } from 'react-redux';
+import jwt_decode from "jwt-decode";
+// import { Button } from "@material-tailwind/react";
+
+import {
+  useGoogleLogin,
+  GoogleLogin,
+  hasGrantedAllScopesGoogle,
+} from "@react-oauth/google";
+
 
 const LoginCard = () => {
+
+ 
 
   const [showPassword,setShowPassword] = useState(false);
 
@@ -49,6 +60,75 @@ const LoginCard = () => {
 
     // console.log(loginCred,regCred);
   };
+
+
+  const onLoginSuccess = async (tokenResponse) => {
+
+  
+    const response = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      }
+    );
+    const decoded = response.data;
+    try {
+      const data = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/users/find/${decoded.email}`
+      );
+      if (data.data == null) {
+        const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/google/register`, {
+          name: decoded.name,
+          email: decoded.email,
+          profile: decoded.picture,
+        });
+        toast.success(`Registered Successfully!`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        localStorage.setItem("token", res.data.token);
+        dispatch(loginUser(res.data.details));
+        // dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+        // getCart(res.data.details._id, res.data.token);
+        navigate("/");
+      } else {
+        const user = data.data;
+        const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/google/login`, {
+          email: user.email,
+        });
+        console.log("Login card Line 106",res.data.details);
+        toast.success(`Welcome ${res.data.details.name}!`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user",JSON.stringify(res.data.details))
+        dispatch(loginUser(res.data.details));
+        // getCart(res.data.details._id, res.data.token);
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onLoginFail = (res) => {
+    console.log(res);
+  };
+  
 
   const handleSubmit=async (e)=>{
     // e.preventDefault();
@@ -108,6 +188,7 @@ const LoginCard = () => {
       try {
         const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, loginCred);
         if(res.status==200){
+          console.log(res.data.user);
         dispatch(loginUser(res.data.user));
         localStorage.setItem("user",JSON.stringify(res.data.user));
         toast.success(`Welcome ${res.data.user.name}!`, {
@@ -121,7 +202,7 @@ const LoginCard = () => {
           theme: "dark",
         });
         // setCookie("access_token", res.data.token);
-        localStorage.setItem("token",JSON.stringify(res.data.token));
+        localStorage.setItem("token",res.data.token);
         // console.log(res.data)
 
         // getCart(res.data.details._id, res.data.token);
@@ -331,7 +412,7 @@ const LoginCard = () => {
           </button>
 
           {/* <!-- Divider --> */}
-          {/* <div
+          {<div> <div
             class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
             <p
               class="mx-4 mb-0 text-center font-semibold">
@@ -340,43 +421,31 @@ const LoginCard = () => {
           </div>
 
           
+          <button 
+            class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-black shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]  bg-[#FFC5C4]"
+            // style="background-color: #3b5998"
+            onClick={useGoogleLogin({
+                    onSuccess: (tokenResponse) => {
+                      onLoginSuccess(tokenResponse);
+                    },
+                  })}
+            >
+            
+            <div class="bg-white p-2 rounded-full"><svg class="w-4" viewBox="0 0 533.5 544.3"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"></path><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"></path><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"></path><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"></path></svg></div>
+            <span className='font-bold ml-4'>Continue with Google</span>
+          </button >
           <a
-            class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]  bg-[#3b5998]"
+            class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-black shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]  bg-[#FFC5C4]"
             // style="background-color: #3b5998"
             href="#!"
             role="button"
             data-te-ripple-init
             data-te-ripple-color="light">
             
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="mr-2 h-3.5 w-3.5"
-              fill="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-            </svg>
-            Continue with Facebook
+            <div class="bg-white p-1 rounded-full"><svg class="w-6" viewBox="0 0 32 32"><path fill-rule="evenodd" d="M16 4C9.371 4 4 9.371 4 16c0 5.3 3.438 9.8 8.207 11.387.602.11.82-.258.82-.578 0-.286-.011-1.04-.015-2.04-3.34.723-4.043-1.609-4.043-1.609-.547-1.387-1.332-1.758-1.332-1.758-1.09-.742.082-.726.082-.726 1.203.086 1.836 1.234 1.836 1.234 1.07 1.836 2.808 1.305 3.492 1 .11-.777.422-1.305.762-1.605-2.664-.301-5.465-1.332-5.465-5.93 0-1.313.469-2.383 1.234-3.223-.121-.3-.535-1.523.117-3.175 0 0 1.008-.32 3.301 1.23A11.487 11.487 0 0116 9.805c1.02.004 2.047.136 3.004.402 2.293-1.55 3.297-1.23 3.297-1.23.656 1.652.246 2.875.12 3.175.77.84 1.231 1.91 1.231 3.223 0 4.61-2.804 5.621-5.476 5.922.43.367.812 1.101.812 2.219 0 1.605-.011 2.898-.011 3.293 0 .32.214.695.824.578C24.566 25.797 28 21.3 28 16c0-6.629-5.371-12-12-12z"></path></svg></div>
+            <p className='font-bold ml-4'>Continue with Github</p>
           </a>
-          <a
-            class="mb-3 flex w-full items-center justify-center rounded bg-info px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#54b4d3] transition duration-150 ease-in-out hover:bg-info-600 hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:bg-info-600 focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:outline-none focus:ring-0 active:bg-info-700 active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] 
-            bg-[#55acee]"
-            // style="background-color: #55acee"
-            href="#!"
-            role="button"
-            data-te-ripple-init
-            data-te-ripple-color="light">
-            
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="mr-2 h-3.5 w-3.5"
-              fill="currentColor"
-              viewBox="0 0 24 24">
-              <path
-                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-            </svg>
-            Continue with Twitter
-          </a> */}
+          </div> }
         {/* </form> */}
       </div>
     </div>
