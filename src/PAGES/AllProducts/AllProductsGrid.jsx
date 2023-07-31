@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import ProductsCard from './AllProductsCard'
 
 const ProductsGrid = () => {
-  const {data:allProducts} = useSelector((state)=>state.AllProducts)
+  const allProducts = useSelector((state)=>state.AllProducts)
   const {category,sortBy} = useParams();
   console.log(sortBy);
   // console.log(JSON.stringify(category))

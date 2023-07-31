@@ -11,11 +11,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-const ProductDescription = ({product}) => {
+const SoapProductDescription = ({product}) => {
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
-    const [showColour, setShowColour] = useState(false);
+    const [showSize, setShowSize] = useState(false);
     const token = localStorage.getItem("token");
     const dispatch=useDispatch();
     const handleAddToCart=async(product)=>{
@@ -86,6 +86,7 @@ const ProductDescription = ({product}) => {
 
     return (
         <div>
+        
             {showlottie?<div className="fixed z-50 md:left-[17vw]  xl:left-[40vw] translate-y-[0vh]">
     <Player
   autoplay
@@ -165,8 +166,29 @@ const ProductDescription = ({product}) => {
                            {product.name}
                         </h1>
                     </div>
-                    <div onClick={() => setShowColour(!showColour)}  className="py-4 border-b border-gray-200 flex items-center justify-between">
-                        <p className="text-base leading-4 text-gray-800">Colour</p>
+                    {/* <div className="py-4 border-b border-gray-200 flex items-center justify-between">
+                        <p className="text-base leading-4 text-gray-800">Colours</p>
+                        <div className="flex items-center justify-center">
+                            <p className="text-sm leading-none text-gray-600">Smoke Blue with red accents</p>
+                            <div
+                                className="
+								w-6
+								h-6
+								bg-gradient-to-b
+								from-gray-900
+								to-indigo-500
+								ml-3
+								mr-4
+								cursor-pointer
+							"
+                            ></div>
+                            <svg className="cursor-pointer" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L5 5L1 9" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                    </div> */}
+                    <div onClick={() => setShowSize(!showSize)}  className="py-4 border-b border-gray-200 flex items-center justify-between">
+                        <p className="text-base leading-4 text-gray-800">Size</p>
                         <div className="flex items-center justify-center" >
                             <p className="text-sm leading-none text-gray-600 mr-3">38.2</p>
                             <button
@@ -178,7 +200,7 @@ const ProductDescription = ({product}) => {
                                     aria-label="show or hide"
                                     
                                 >
-                                    <svg className={"transform " + (showColour ? "rotate-180" : "rotate-0")} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg className={"transform " + (showSize ? "rotate-180" : "rotate-0")} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M9 1L5 5L1 1" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
@@ -187,51 +209,23 @@ const ProductDescription = ({product}) => {
                             </div>
                             
                         </div>
-                        <div className={`pt-4 text-base leading-normal pr-12 mb-4 w-[100%] text-gray-600  ${showColour ? "inline-block" : "hidden"}`} id="sect">
-                                        <div className="inline-grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                       <button className=" grid grid-row-2 ">
-                                       <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Blue_crocheting_thread.jpg" alt="image" className='shadow-lg h-[7vh] lg:h-[10vh] mr-4 ml-4 inline-block' ></img>
-                                       <span className = ' md:ml-4'> torquoise</span>
-                                       </button>
-                                       </div>
-                                       <div className="inline-grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                       <button className=" grid grid-row-2 ">
-                                       <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Blue_crocheting_thread.jpg" alt="image" className='shadow-lg h-[7vh] lg:h-[10vh] mr-4 ml-4 inline-block' ></img>
-                                       <span className = ' md:ml-4'> torquoise</span>
-                                       </button>
-                                       </div>
-                                       <div className="inline-grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                       <button className=" grid grid-row-2 ">
-                                       <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Blue_crocheting_thread.jpg" alt="image" className='shadow-lg h-[7vh] lg:h-[10vh] mr-4 ml-4 inline-block' ></img>
-                                       <span className = ' md:ml-4'> torquoise</span>
-                                       </button>
-                                       </div>
-                                       <div className="inline-grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                       <button className=" grid grid-row-2 ">
-                                       <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Blue_crocheting_thread.jpg" alt="image" className='shadow-lg h-[7vh] lg:h-[10vh] mr-4 ml-4 inline-block' ></img>
-                                       <span className = ' md:ml-4'> torquoise</span>
-                                       </button>
-                                       </div>
-                                       <div className="inline-grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                       <button className=" grid grid-row-2 ">
-                                       <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Blue_crocheting_thread.jpg" alt="image" className='shadow-lg h-[7vh] lg:h-[10vh] mr-4 ml-4 inline-block' ></img>
-                                       <span className = ' md:ml-4'> torquoise</span>
-                                       </button>
-                                       </div>
+                            <div className={"pt-4 text-base leading-normal pr-12 mb-4 text-gray-600 " + (showSize ? "block" : "hidden")} id="sect">
+                                    <ol className='flex'>
+                                       <li>
+                                       <Link to="" className='inline-block hover:bg-slate-300 bg-slate-200 p-4 mr-4'>100gm</Link>
+                                       </li>
+                                       <li>
+                                       <Link to="" className='inline-block hover:bg-slate-300 bg-slate-200 p-4 mr-4'>100gm</Link>
+                                       </li>
+                                       <li>
+                                       <Link to="" className='inline-block hover:bg-slate-300 bg-slate-200 p-4 mr-4'>100gm</Link>
+                                       </li>
+                                    </ol>
 
-                            </div>
+                                </div>
                         <div>
                        
                     </div>
-                    {/* <div className="py-4 border-b border-gray-200 flex items-center justify-between">
-                        <p className="text-base leading-4 text-gray-800">Size</p>
-                        <div className="flex items-center justify-center">
-                            <p className="text-sm leading-none text-gray-600 mr-3">38.2</p>
-                            <svg className="cursor-pointer" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L5 5L1 9" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </div>
-                    </div> */}
                     {/* <button
                         className="
 						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800
@@ -313,6 +307,12 @@ const ProductDescription = ({product}) => {
                     </div>
                     <div>
                     {product.description}
+                        {/* <p className="xl:pr-48 text-base lg:leading-tight leading-normal text-gray-600 mt-7">It is a long established fact that a reader will be distracted by thereadable content of a page when looking at its layout. The point of usingLorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
+                        <p className="text-base leading-4 mt-7 text-gray-600">Product Code: 8BN321AF2IF0NYA</p>
+                        <p className="text-base leading-4 mt-4 text-gray-600">Length: 13.2 inches</p>
+                        <p className="text-base leading-4 mt-4 text-gray-600">Height: 10 inches</p>
+                        <p className="text-base leading-4 mt-4 text-gray-600">Depth: 5.1 inches</p>
+                        <p className="md:w-96 text-base leading-normal text-gray-600 mt-4">Composition: 100% calf leather, inside: 100% lamb leather</p> */}
                     </div>
                     <div>
                         <div className="border-t border-b py-4 mt-7 border-gray-200">
@@ -419,4 +419,4 @@ const ProductDescription = ({product}) => {
     )
 }
 
-export default ProductDescription
+export default SoapProductDescription

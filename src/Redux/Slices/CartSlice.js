@@ -5,47 +5,12 @@ import { useCookies } from 'react-cookie';
 
 
 
-export const loadState = async () => {
-  try {
-    const token  = localStorage.getItem('token');
-    const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/cart/`,{token:token});
-    let serialState=null;
-    // console.log(response)
-    if(response.status==200){
-      serialState=response.data.data.cart;
-      const cart_res = serialState;
-      const cartTotal = cart_res.items.reduce((total, item) => total + item.qty * item.productId.price, 0);
-      serialState.totalCost = cartTotal;
-      serialState.changed=false;
-      serialState.loading=false;
-      // console.log(serialState);
-    } 
-    if (serialState === null) {
-      return {
-          _id: "",
-          totalCost: 0,
-          items: [],
-          changed: false,
-          loading: true
-        
-    }
-  }
-    return serialState;
-  } catch (err) {
-    return {
-        _id: "",
-        totalCost: 0,
-        items: [],
-        changed: false,
-        loading: true
-  }
-}
-};
 
-const data = await loadState();
+
+// const data = await loadState();
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: data
+  initialState: {}
   ,
   reducers: {
 

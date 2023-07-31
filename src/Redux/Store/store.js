@@ -3,15 +3,127 @@ import WishList from "../Slices/WishlistSlice";
 import AllProductSlice from "../Slices/AllProductSlice";
 import cartSlice from "../Slices/CartSlice";
 import User from "../Slices/UserSlice"
+import axios from "axios";
 
-const loadState = () => {
+const loadStateUser = () => {
     try {
-      const serialState = localStorage.getItem("user");
+      let serialState = localStorage.getItem("user");
+      if(serialState){
+        serialState=JSON.parse(serialState)
+        serialState.loading=false;
+        return serialState;
+      }
+      else{
+        return {}
+      }
       return serialState ? JSON.parse(serialState) : {};
     } catch (err) {
       console.log(err);
       return {};
     }
+  };
+
+  export const loadStateAllProducts = async () => {
+    try {
+      const token  = localStorage.getItem('token');
+      const response=await axios.get(`${process.env.REACT_APP_SERVER_URL}/product/`);
+      let serialState=null;
+      // console.log(response)
+      if(response.status==200){
+        serialState=response.data.data;
+
+        serialState.loading=false;
+        // console.log(serialState);
+      } 
+      if (serialState === null) {
+        return {
+            _id: "",
+            totalCost: 0,
+            items: [],
+            changed: false,
+            loading: true
+      }
+    }
+      return serialState;
+    } catch (err) {
+      return {
+          _id: "",
+          totalCost: 0,
+          items: [],
+          changed: false,
+          loading: true
+    }
+  }
+  };
+
+
+export const loadStateWishlist = async () => {
+    try {
+      const token  = localStorage.getItem('token');
+      const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/`,{token:token});
+      let serialState=null;
+      // console.log(response)
+      if(response.status==200){
+        serialState=response.data.data.wishlist;
+
+        serialState.loading=false;
+      //   const wishlist_res = serialState;
+      //   const wishlistTotal = wishlist_res.items.reduce((total, item) => total + item.qty * item.productId.price, 0);
+      //   serialState.totalCost = wishlistTotal;
+      //   serialState.changed=false;
+      //   serialState.loading=false;
+        // console.log(serialState);
+      } 
+      if (serialState === null) {
+        return {}
+    }
+      return serialState;
+    } catch (err) {
+      return {
+          _id: "",
+          totalCost: 0,
+          items: [],
+          changed: false,
+          loading: true
+    }
+  }
+  };
+
+  export const loadStateCart = async () => {
+    try {
+      const token  = localStorage.getItem('token');
+      const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/cart/`,{token:token});
+      let serialState=null;
+      // console.log(response)
+      if(response.status==200){
+        serialState=response.data.data.cart;
+        const cart_res = serialState;
+        const cartTotal = cart_res.items.reduce((total, item) => total + item.qty * item.productId.price, 0);
+        serialState.totalCost = cartTotal;
+        serialState.changed=false;
+        serialState.loading=false;
+        // console.log(serialState);
+      } 
+      if (serialState === null) {
+        return {
+            _id: "",
+            totalCost: 0,
+            items: [],
+            changed: false,
+            loading: true
+          
+      }
+    }
+      return serialState;
+    } catch (err) {
+      return {
+          _id: "",
+          totalCost: 0,
+          items: [],
+          changed: false,
+          loading: true
+    }
+  }
   };
 
 const  store = configureStore({
@@ -22,9 +134,10 @@ const  store = configureStore({
         WishList:WishList
     },
     preloadedState: {
-        User:{
-            data:loadState(),
-        }
+        User:loadStateUser(),
+        AllProducts:await loadStateAllProducts(),
+        WishList:await loadStateWishlist(),
+        Cart:await loadStateCart(),
     }
 })
 

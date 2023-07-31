@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
-    "framer-motion": "^10.12.18",
+    "framer-motion": "^10.14.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "pure-react-carousel": "^1.30.1",

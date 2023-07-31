@@ -143,7 +143,7 @@ const Cart = ({ show, setShow }) => {
                                             </div>
                                             <div className="flex items-center justify-between pt-5">
                                                 <p className="text-base leading-none text-gray-800">Shipping</p>
-                                                <p className="text-base leading-none text-gray-800">₹30</p>
+                                                <p className="text-base leading-none text-gray-800">₹{cartStateRedux.totalCost<3000?`120`:`0`}</p>
                                             </div>
                                             <div className="flex items-center justify-between pt-5">
                                                 <p className="text-base leading-none text-gray-800">Tax</p>
@@ -153,7 +153,8 @@ const Cart = ({ show, setShow }) => {
                                         <div>
                                             <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
                                                 <p className="text-2xl leading-normal text-gray-800">Total</p>
-                                                <p className="text-2xl font-bold leading-normal text-right text-gray-800">₹{cartStateRedux.totalCost * 118 / 100 + 30}</p>
+                                                <p className="text-2xl font-bold leading-normal text-right text-gray-800">₹{(cartStateRedux.totalCost * 118 / 100) + (cartStateRedux.totalCost > 3000 ? 0 : 120)
+}</p>
                                             </div>
                                             <button onClick={() => setShow(!show)} className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
                                                 Checkout

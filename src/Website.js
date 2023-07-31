@@ -21,19 +21,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { cartActions } from './Redux/Slices/CartSlice';
-import Website from './Website';
+import ProfilePage from './PAGES/Profile Page/ProfilePage';
 
 
 
-function App() {
+
+function Website() {
 
 
 
 
   const user= useSelector((state)=>state.User);
-  // const {data:wishlist}= useSelector((state)=>state.Wishlist);
-  // const {data:cart}= useSelector((state)=>state.Cart);
-  // const {data:allproducts}= useSelector((state)=>state.AllProducts);
 // if(user && user._id){ 
 //   // console.log(user);
 //   localStorage.setItem("user",JSON.stringify(user));}
@@ -41,9 +39,32 @@ function App() {
   const [show, setShow] = useState(false);
 
   return (
-    // if(user.loading == "")
-   <Website />
+    <Router>
+    <div className="App scroll-smooth bg-[#]">
+    <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="dark"
+      />
+      <Navbar show={show} setShow={setShow} />
+      <Cart  show={show} setShow={setShow}/>
+    </div>
+    <Routes>
+    <Route exact path="/" element={<Home />} />
+    <Route exact path="/allproducts/:category/:sortBy" element={<AllProductsPage />} />
+    <Route path="/products/:productId" element={<ProductPage />} />
+    <Route exact path="/login" element={user && user.data?<Home/>:<LoginHome />} />
+    <Route exact path="/wishlist" element={<WishListPage />} />
+    <Route exact path="/profile" element={<ProfilePage />} />
+    </Routes>
+    <Footer />
+    </Router>
   );
 }
 
-export default App;
+export default Website;

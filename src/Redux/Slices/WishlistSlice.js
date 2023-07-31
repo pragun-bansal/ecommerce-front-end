@@ -5,40 +5,11 @@ import { useCookies } from 'react-cookie';
 
 
 
-export const loadState = async () => {
-  try {
-    const token  = localStorage.getItem('token');
-    const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/`,{token:token});
-    let serialState=null;
-    // console.log(response)
-    if(response.status==200){
-      serialState=response.data.data.wishlist;
-    //   const wishlist_res = serialState;
-    //   const wishlistTotal = wishlist_res.items.reduce((total, item) => total + item.qty * item.productId.price, 0);
-    //   serialState.totalCost = wishlistTotal;
-    //   serialState.changed=false;
-    //   serialState.loading=false;
-      // console.log(serialState);
-    } 
-    if (serialState === null) {
-      return {}
-  }
-    return serialState;
-  } catch (err) {
-    return {
-        _id: "",
-        totalCost: 0,
-        items: [],
-        changed: false,
-        loading: true
-  }
-}
-};
 
-const data = await loadState();
+// const data = await loadState();
 const Wishlist = createSlice({
   name: 'wishlist',
-  initialState: data
+  initialState: {}
   ,
   reducers: {
 

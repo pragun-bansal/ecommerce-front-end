@@ -9,10 +9,14 @@ import Logo3 from "../../images/Logo3.png"
 import CartSVG from "../../svg/shopping-cart.png"
 
 import { Categories } from '../../PAGES/Categories';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export const Navbar = ({ show, setShow }) => {
   const [dropdown, setDropdown] = useState(false);
   const [droppeddown, setDroppeddown] = useState(false);
+  const [dropdown2, setDropdown2] = useState(false);
+  const [droppeddown2, setDroppeddown2] = useState(false);
   // const handleClick=()=>{
   //   console.log("clicked",clicked)
   //   setClicked(!clicked);
@@ -25,6 +29,27 @@ export const Navbar = ({ show, setShow }) => {
     navigate("/");
     // ref.current?.scrollIntoView({behavior: 'smooth'});
   }
+
+  const handleLogOut = ()=>{
+    localStorage.clear("token");
+    localStorage.clear("user");
+    toast.success(`Come Back Soon`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+    navigate("/login");
+    window.location.reload();
+  }
+
+  const user = useSelector((state) => state.User)
+  const token = localStorage.getItem("token")
+  const [pfpHover, setPfpHover] = useState(false)
 
 
   return (
@@ -52,9 +77,34 @@ export const Navbar = ({ show, setShow }) => {
             </a>
           </li></ul>
         <Link to="/" className='mx-auto' ><img className=' lg:h-[17vh] w-[50vw] lg:w-auto mx-auto' src={Logo3} alt="Logo" /></Link>
-        <button onClick={()=>{navigate("/login")}}>
-        <svg className="h-[4vh] lg:h-[6vh] lg:translate-y-[5.5vh] translate-y-[-4vh] p-2 " xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
-        </button>
+        {token ?
+          <div class="mb-4 lg:mb-0 mr-1 lg:translate-y-[11vh]   2xl:translate-y-[11.3vh] p-2">
+
+
+            <button href="#dest" onMouseOver={() => { setDropdown2(true) }} onMouseOut={() => { setDropdown2(false) }} id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" data-dropdown-trigger="hover" class="group flex items-center justify-between w-full py-2 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-white md:p-0 md:w-auto " className={dropdown2 || droppeddown2 ? `text-white` : `text-white`}>
+              <img class="h-[2.5vh] w-[2.5vh]  md:w-10 md:h-10 rounded-full cursor-pointer" src={user.pfp} alt="User pfp" />
+              <span class={dropdown || droppeddown2 ? `block max-w-full transition-all duration-500 h-0.5 bg-white` : `max-w-0 block transition-all duration-500 h-0.5 bg-white`}></span>
+            </button>
+            <div onMouseOver={() => { setDroppeddown2(true) }} onMouseOut={() => { setDroppeddown2(false) }} id="dropdownNavbar" class={dropdown2 || droppeddown2 ? `absolute translate-x-[-10px] translate-y-[-10px] bg-white z-10 font-normal  divide-y divide-gray-100  shadow-md w-44 ` : `hidden`}>
+              <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+
+                <li>
+                  <Link to="/profile" class="block px-4 py-2 hover:bg-gray-100 text-center">View Profile</Link>
+                </li>
+                <li>
+                  <button onClick={()=>handleLogOut()} class="block px-4 py-2 hover:bg-gray-100 w-full">Logout User</button>
+                </li>
+              </ul>
+              {/* <div class="py-1">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                      </div> */}
+            </div>
+
+          </div>
+          :
+          <button onClick={() => { navigate("/login") }}>
+            <svg className="h-[4vh] lg:h-[6vh] lg:translate-y-[5.5vh] translate-y-[-4vh] p-2 " xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
+          </button>}
         <button onClick={() => { navigate("/wishlist") }} >
           <svg className="fill-[#EE6983]  h-[4vh] lg:h-[6vh]  lg:translate-y-[5.5vh] translate-y-[-4vh] p-2 " xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9l2.6-2.4C267.2 438.6 256 404.6 256 368c0-97.2 78.8-176 176-176c28.3 0 55 6.7 78.7 18.5c.9-6.5 1.3-13 1.3-19.6v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5zM432 512a144 144 0 1 0 0-288 144 144 0 1 0 0 288zm16-208v48h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V384H368c-8.8 0-16-7.2-16-16s7.2-16 16-16h48V304c0-8.8 7.2-16 16-16s16 7.2 16 16z" /></svg>
         </button>
@@ -82,14 +132,14 @@ export const Navbar = ({ show, setShow }) => {
                   </button>
                   <div onMouseOver={() => { setDroppeddown(true) }} onMouseOut={() => { setDroppeddown(false) }} id="dropdownNavbar" class={dropdown || droppeddown ? `absolute translate-x-[-10px] bg-white z-10 font-normal  divide-y divide-gray-100  shadow-md w-44 ` : `hidden`}>
                     <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
-                      {Categories.map((item,index)=>{
-                        return(
+                      {Categories.map((item, index) => {
+                        return (
                           <li>
-                        <Link to={`/allproducts/${item.name.toLocaleLowerCase()}/newArrivals`} class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
-                      </li>
+                            <Link to={`/allproducts/${item.name.toLocaleLowerCase()}/newArrivals`} class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
+                          </li>
                         )
                       })}
-                      
+
                       <li>
                         <Link to="/allproducts/all/newArrivals" class="block px-4 py-2 hover:bg-gray-100 ">All</Link>
                       </li>
@@ -118,14 +168,20 @@ export const Navbar = ({ show, setShow }) => {
                 <li className='basis-[20%]'>
                   <form>
                     <div class="relative">
-                      <button onClick={() => { console.log("clicked") }} type="submit" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                    {droppeddown2 || dropdown2 ?<button onClick={() => { console.log("clicked") }} type="submit" class="absolute inset-y-0 left-0 flex items-center pl-3 translate-y-3">
+                        <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                      </button>
+                    :
+                     <><button onClick={() => { console.log("clicked") }} type="submit" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
                         <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                       </button>
                       <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
 
-                      <input type="search" id="default-search" class="flex underline w-full p-1 pl-10 text-sm text-white placeholder-white rounded-lg bg-[#EE6983] " placeholder="______________________" required />
+                        <input type="search" id="default-search" class="z-50 flex underline w-full p-1 pl-10 text-sm text-white placeholder-white rounded-lg bg-[#EE6983] " placeholder="______________________" required /></>}
                       {/* <button type="submit" class="text-white absolute right-[-40%] bottom-0.5 bg-[] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1   ">Search</button> */}
                     </div>
                   </form>

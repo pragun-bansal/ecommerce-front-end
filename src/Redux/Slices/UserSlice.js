@@ -54,7 +54,7 @@ const User = createSlice({
         },
         loginUser(state,action){
             // console.log(action.payload)
-            state.data=action.payload
+            state=action.payload
         },
         fetchUser(state,action){
           return state.data;
