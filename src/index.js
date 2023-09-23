@@ -32,7 +32,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import ReactGA from 'react-ga';
 
 // Initialize react-ga with your Tracking ID
-ReactGA.initialize('UA-XXXXXXXXX-X'); // Replace with your Tracking ID
+ReactGA.initialize('G-QXGFE5T3V5'); // Replace with your Tracking ID
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
