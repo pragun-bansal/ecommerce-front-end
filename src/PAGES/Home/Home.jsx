@@ -6,15 +6,7 @@ import CardsGrid from './CategoryGrid'
 import ReviewCarousel from './ReviewCarousel'
 import TestimonialsCarousel from './TestimonialsCarousel'
 
-import ReactGA from 'react-ga';
-
-
-
 const Home = () => {
-  useEffect(() => {
-    // Track a page view
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
   return (
     <div>
     <div className='z-[-10]'> <Carousel /></div>
