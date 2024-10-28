@@ -7,17 +7,20 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-
+import Loader from '../../Components/Loader/Loader'
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 
 const ProductsPage = () => {
-  const { data: allProducts } = useSelector((state) => state.AllProducts)
+  const { status,data: allProducts } = useSelector((state) => state.AllProducts)
   const { category, sortBy } = useParams();
   const navigate = useNavigate();
 
+  if (status === 'loading') {
+    return <Loader />;
+  }
   return (
     <div>
       <div className='ml-[50px]'>

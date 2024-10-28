@@ -22,6 +22,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { cartActions } from './Redux/Slices/CartSlice';
 import Website from './Website';
+import Loader from './Components/Loader/Loader';
 
 
 
@@ -41,9 +42,16 @@ function App() {
   const [show, setShow] = useState(false);
 
   return (
-    // if(user.loading == "")
-   <Website />
+      <>
+        {user.loading ?
+          <Loader />
+
+        :
+          <Website />
+        }
+      </>
   );
+
 }
 
 export default App;
