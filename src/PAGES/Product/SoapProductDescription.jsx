@@ -10,6 +10,7 @@ import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import {LensDemo} from "../../Components/acertinityUI/LensImage/LensDemo";
 
 const SoapProductDescription = ({product}) => {
     const [show, setShow] = useState(false);
@@ -111,12 +112,14 @@ const SoapProductDescription = ({product}) => {
                         dynamicHeight={false}
                         className="w-[100%] h-[100vh] md:h-[70vh] xl:h-[100vh] mb-[30px] align-middle object-scale-down"
                     >
-                        <div className='align-middle py-auto'>
-                            <img src={product.main_image1} alt="image1" className="object-scale-down" />
-                        </div>
-                        <div className='align-middle py-auto'>
-                            <img src={product.main_image2} alt="image2" className="object-scale-down" />
-                        </div>
+                        {/*<div className='align-middle py-auto'>*/}
+                        {/*    <img src={product.main_image1} alt="image1" className="object-scale-down" />*/}
+                            <LensDemo image ={product.main_image1}/>
+                        {/*</div>*/}
+                        {/*<div className='align-middle py-auto'>*/}
+                            <LensDemo image ={product.main_image2}/>
+                            {/*<img src={product.main_image2} alt="image2" className="object-scale-down" />*/}
+                        {/*</div>*/}
                         {
                             product.all_images?.map(()=>{
                                 return

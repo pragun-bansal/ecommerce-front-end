@@ -40,7 +40,7 @@ function Website() {
 
   return (
     <Router>
-    <div className="App scroll-smooth bg-[#]">
+    <div className="App scroll-smooth bg-[#] z-10">
     <ToastContainer
         position="top-center"
         autoClose={2000}

@@ -70,17 +70,19 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const STATUSES = Object.freeze({
-    IDLE: 'idle',
-    LOADING: 'loading',
-    ERROR: 'error',
+    IDLE: "idle",
+    LOADING: "loading",
+    ERROR: "error",
 });
 
+const initialState = {
+    data: {},
+    status: STATUSES.IDLE,
+};
+
 const User = createSlice({
-    name: 'User',
-    initialState: {
-        data: {},
-        status: STATUSES.IDLE,
-    },
+    name: "User",
+    initialState,
     reducers: {
         logoutUser(state, action) {
             state.data = {};
@@ -110,7 +112,7 @@ const User = createSlice({
         },
         setIdle(state) {
             state.status = STATUSES.IDLE;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -123,15 +125,15 @@ const User = createSlice({
             })
             .addCase(fetchUserData.rejected, (state) => {
                 state.status = STATUSES.ERROR;
-            });
-    }
+            })
+            .addCase("RESET", () => initialState); // Handle RESET action
+    },
 });
 
 export const { add, remove, newList, logoutUser, loginUser, fetchUser, setLoading, setError, setIdle } = User.actions;
 export default User.reducer;
 
-// Example async thunk action
-export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => {
-    const response = await axios.get('/api/user');
+export const fetchUserData = createAsyncThunk("user/fetchUserData", async () => {
+    const response = await axios.get("/api/user");
     return response.data;
 });

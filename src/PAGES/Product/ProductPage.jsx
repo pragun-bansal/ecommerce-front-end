@@ -58,6 +58,10 @@ import ProductDescription from './ProductDescription';
 import ProductReviews from './ProductReview';
 import SoapProductDescription from './SoapProductDescription';
 import Loader from '../../Components/Loader/Loader';
+import {LensDemo} from "../../Components/acertinityUI/LensImage/LensDemo";
+import {Skeleton} from "./Skeleton";
+import {ProductPageSkeleton} from "./ProductPageSkeleton";
+import ProductReviewSkeleton from "./ProductReviewSkeleton";
 
 const ProductPage = () => {
   const [writeReview, setWriteReview] = useState(false);
@@ -87,13 +91,14 @@ const ProductPage = () => {
   }, [productId]);
 
   if (loading) {
-    return <Loader />; // Render Loader while loading
+    return <ProductPageSkeleton />; // Render Loader while loading
   }
 
   return (
       <div>
         {product ? (
             <div>
+
               {soap ? <SoapProductDescription product={product} /> : <ProductDescription product={product} />}
               <div className='xl:flex'>
                 <RatingGraph product={product} />
@@ -104,6 +109,7 @@ const ProductPage = () => {
             "product not found"
         )}
       </div>
+
   );
 };
 

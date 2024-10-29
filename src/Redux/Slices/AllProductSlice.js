@@ -65,10 +65,32 @@ const AllProduct = createSlice({
     },
     reducers: {
         addItemToCart(state, action) {
-            // existing reducer logic
+            const newItem = action.payload;
+
+              const existingItem = state.items.find((item) => item.productId === newItem.productId);
+              if (!existingItem) {
+                state.items.push({
+                    productId: newItem.productId,
+                    productName: newItem.productName,
+                    productPrice: newItem.productPrice,
+                    productImage: newItem.productImage,
+                    qty: newItem.qty,
+                    countInStock: newItem.countInStock,
+                });
+                const cartTotal = state.items.reduce((total, item) => total + item.qty * item.productPrice, 0);
+                state.totalCost = cartTotal;
+              }
+              else {
+                existingItem.qty=newItem.qty;
+                const cartTotal = state.items.reduce((total, item) => total + item.qty * item.productPrice, 0);
+                state.totalCost = cartTotal;
+              }
         },
         removeItemFromCart(state, action) {
-            // existing reducer logic
+            const newItemId = action.payload;
+            state.items = state.items.filter((item) => item.productId !== newItemId);
+            const cartTotal = state.items.reduce((total, item) => total + item.qty * item.productPrice, 0);
+            state.totalCost = cartTotal;
         },
     },
     extraReducers: (builder) => {

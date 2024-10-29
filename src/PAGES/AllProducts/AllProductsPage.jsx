@@ -14,7 +14,7 @@ function classNames(...classes) {
 
 
 const ProductsPage = () => {
-  const { status,data: allProducts } = useSelector((state) => state.AllProducts)
+  const { data: allProducts,status } = useSelector((state) => state.AllProducts)
   const { category, sortBy } = useParams();
   const navigate = useNavigate();
 
