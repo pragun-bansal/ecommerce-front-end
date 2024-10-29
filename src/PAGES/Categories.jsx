@@ -1,28 +1,32 @@
 const Categories=[
     {
-        name:"Bags",
+        name:"bags",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
     {
-        name:"Homemade Soaps",
+        name:"homemade soaps",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
     {
-        name:"Apparels",
+        name:"apparels",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
     {
-        name:"Festive Collection",
+        name:"festive collection",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
     {
-        name:"Accessories",
+        name:"accessories",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
     {
-        name:"Home Decor",
+        name:"home decor",
         imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
     },
+    {
+        name:"all",
+        imageUrl:'https://rukminim1.flixcart.com/image/850/1000/l0pm3680/bag/3/k/q/leather-hand-bags-small-square-bags-women-handbags-for-women-original-imagcfuhxfcrxzua.jpeg?q=20'
+    }
 ]
 
 module.exports = {

@@ -70,11 +70,11 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [soap, setSoap] = useState();
   const [loading, setLoading] = useState(true); // Add loading state
-
+console.log(productId)
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/product/productById`, { productId });
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/product/${productId}`);
         setProduct(response.data.data);
         setSoap(response.data.data.category.find((p) => p === "homemade soaps"));
       } catch (error) {

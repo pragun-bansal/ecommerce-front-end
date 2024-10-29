@@ -22,6 +22,8 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { cartActions } from './Redux/Slices/CartSlice';
 import ProfilePage from './PAGES/Profile Page/ProfilePage';
+import AdminPage from './PAGES/AdminPanel/AdminPage';
+import EditProduct from './PAGES/AdminPanel/EditProduct'
 
 
 
@@ -61,6 +63,12 @@ function Website() {
     <Route exact path="/login" element={user && user.data?<Home/>:<LoginHome />} />
     <Route exact path="/wishlist" element={<WishListPage />} />
     <Route exact path="/profile" element={<ProfilePage />} />
+      <Route exact path={"/admin"} element={<AdminPage />} />
+      <Route exact path={"/admin/edit-product/:productId"} element={<EditProduct />} />
+      <Route exact path={"/admin/add-product/:productId"} element={<EditProduct />} />
+      <Route path="/admin/edit-product" element={<EditProduct />} />
+      {/*<Route exact path={{pathname:"/admin",state:{admin:true}}} element={<AdminPage />} />*/}
+      {/*<Route exact path={{pathname:"/admin/edit-product/:productId",state:{admin:true}}} element={<EditProduct />} />*/}
     </Routes>
     <Footer />
     </Router>

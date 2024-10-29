@@ -20,7 +20,7 @@ const WishList = () => {
     const handleRemove=async(product)=>{
         dispatch(wishlistActions.removeItemFromWishlist(product));
         try{
-            const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/deleteItem`,{productId:product.productId._id,token:token})
+            const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/wishlist/deleteItem`,{productId:product.productId.productId._id,token:token})
         }catch(err){
             console.log(err);
         }
@@ -29,7 +29,7 @@ const WishList = () => {
         dispatch(cartActions.addItemToCart(product))
         setshowlottie(true);
         try{
-            const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/cart/addItem`,{productId:product.productId._id,qty:1,token:token})
+            const response=await axios.post(`${process.env.REACT_APP_SERVER_URL}/cart/addItem`,{productId:product.productId.productId._id,qty:1,token:token})
         }catch(err){
             console.log(err);
         }
@@ -71,9 +71,9 @@ const WishList = () => {
                             return (
                                 <div className="flex flex-col">
                         <div className="relative ">
-                            <img className="hidden lg:block" src={product.productId.main_image1} alt="bag" />
-                            <img className="hidden sm:block lg:hidden" src={product.productId.main_image1} alt="bag" />
-                            <img className=" sm:hidden" src={product.productId.main_image1} alt="bag" />
+                            <img className="hidden lg:block" src={product.productId.all_images[0]} alt="bag" />
+                            <img className="hidden sm:block lg:hidden" src={product.productId.all_images[0]} alt="bag" />
+                            <img className=" sm:hidden" src={product.productId.all_images[0]} alt="bag" />
                             <button onClick={()=>{handleRemove(product)}} aria-label="close" className="top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 absolute  p-1.5 bg-gray-800 text-white hover:text-gray-400">
                                 <svg className="fil-current" width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M13 1L1 13" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />

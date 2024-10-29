@@ -10,6 +10,7 @@ import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import {LensDemo} from "../../Components/acertinityUI/LensImage/LensDemo";
 
 const ProductDescription = ({product}) => {
     const [show, setShow] = useState(false);
@@ -110,15 +111,15 @@ const ProductDescription = ({product}) => {
                         dynamicHeight={false}
                         className="w-[100%] h-[100vh] md:h-[70vh] xl:h-[100vh] mb-[30px] align-middle object-scale-down"
                     >
-                        <div className='align-middle py-auto'>
-                            <img src={product.main_image1} alt="image1" className="object-scale-down" />
-                        </div>
-                        <div className='align-middle py-auto'>
-                            <img src={product.main_image2} alt="image2" className="object-scale-down" />
-                        </div>
+                        {/*<div className='align-middle py-auto'>*/}
+                        {/*    <img src={product.all_images[0]} alt="image1" className="object-scale-down" />*/}
+                        {/*</div>*/}
+                        {/*<div className='align-middle py-auto'>*/}
+                        {/*    <img src={product.all_images[1]} alt="image2" className="object-scale-down" />*/}
+                        {/*</div>*/}
                         {
-                            product.all_images?.map(()=>{
-                                return
+                            product.all_images?.map((images)=>{
+                                return <LensDemo image ={images}/>
                             })
                         }
                     </Carousel>
@@ -134,18 +135,23 @@ const ProductDescription = ({product}) => {
                         dynamicHeight={false}
                         className="w-[100%] h-[35vh] align-middle object-scale-down"
                     >
-                        <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
-                        </div>
-                        <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
-                        </div>
-                        <div>
-                            <img src={Poster11} alt="image1" className=" object-contain" />
-                        </div>
-                        <div>
-                            <img src={Poster11} alt="image1" className="object-contain" />
-                        </div>
+                        {/*<div className='align-middle py-auto'>*/}
+                        {/*    <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />*/}
+                        {/*</div>*/}
+                        {/*<div className='align-middle py-auto'>*/}
+                        {/*    <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <img src={Poster11} alt="image1" className=" object-contain" />*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <img src={Poster11} alt="image1" className="object-contain" />*/}
+                        {/*</div>*/}
+                        {
+                            product.all_images?.map((images)=>{
+                                return <LensDemo image ={images}/>
+                            })
+                        }
                     </Carousel>
                 </div>
                 <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 md:overflow-y-auto  md:h-[70vh] xl:h-[100vh]">

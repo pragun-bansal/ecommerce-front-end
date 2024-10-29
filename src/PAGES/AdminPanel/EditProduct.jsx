@@ -1,118 +1,193 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Categories } from '../Categories'; // Adjust the path as necessary
+import { useParams, useNavigate } from 'react-router-dom';
+import { Categories } from '../Categories';
 
 const EditProduct = () => {
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
-    const [tagline, setTagline] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
-    const [stock, setStock] = useState('');
-    const [images, setImages] = useState([]);
-    const [sizes, setSizes] = useState([{ size: '', price: '' }]);
-    const [colors, setColors] = useState([{ color: '', price: '' }]);
+    const { productId } = useParams();
+    const navigate = useNavigate();
+    const [product, setProduct] = useState({
+        name: '',
+        category: [],
+        tagline: '',
+        description: '',
+        price: '',
+        stock: '',
+        all_images: [],
+        sizes: [{ size: '', price: '' }],
+        colors: [{ color: '', price: '' }],
+    });
+
+    useEffect(() => {
+        if (productId) {
+            const fetchProduct = async () => {
+                try {
+                    const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/product/${productId}`);
+                    setProduct(response.data.data);
+                } catch (error) {
+                    console.error('Error fetching product:', error);
+                }
+            };
+
+            fetchProduct();
+        }
+    }, [productId]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
+    };
+
+    const handleCategoryChange = (e) => {
+        const { value, checked } = e.target;
+        setProduct((prevProduct) => {
+            const newCategories = checked
+                ? [...prevProduct.category, value]
+                : prevProduct.category.filter((category) => category !== value);
+            return { ...prevProduct, category: newCategories };
+        });
+    };
 
     const handleImageChange = (e) => {
-        setImages([...images, ...Array.from(e.target.files)]);
-    };
-
-    const handleSizeChange = (index, field, value) => {
-        const newSizes = [...sizes];
-        newSizes[index][field] = value;
-        setSizes(newSizes);
-    };
-
-    const handleColorChange = (index, field, value) => {
-        const newColors = [...colors];
-        newColors[index][field] = value;
-        setColors(newColors);
-    };
-
-    const addSizeField = () => {
-        setSizes([...sizes, { size: '', price: '' }]);
-    };
-
-    const addColorField = () => {
-        setColors([...colors, { color: '', price: '' }]);
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            all_images: [...prevProduct.all_images, ...Array.from(e.target.files)],
+        }));
     };
 
     const handleDeleteImage = (index) => {
-        const newImages = images.filter((_, i) => i !== index);
-        setImages(newImages);
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            all_images: prevProduct.all_images.filter((_, i) => i !== index),
+        }));
     };
 
-    const swapImages = (index1, index2) => {
-        const newImages = [...images];
-        [newImages[index1], newImages[index2]] = [newImages[index2], newImages[index1]];
-        setImages(newImages);
+    const swapall_images = (index1, index2) => {
+        const newall_images = [...product.all_images];
+        [newall_images[index1], newall_images[index2]] = [newall_images[index2], newall_images[index1]];
+        setProduct((prevProduct) => ({ ...prevProduct, all_images: newall_images }));
+    };
+
+    const handleSizeChange = (index, field, value) => {
+        const newSizes = [...product.sizes];
+        newSizes[index][field] = value;
+        setProduct((prevProduct) => ({ ...prevProduct, sizes: newSizes }));
+    };
+
+    const handleColorChange = (index, field, value) => {
+        const newColors = [...product.colors];
+        newColors[index][field] = value;
+        setProduct((prevProduct) => ({ ...prevProduct, colors: newColors }));
+    };
+
+    const addSizeField = () => {
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            sizes: [...prevProduct.sizes, { size: '', price: '' }],
+        }));
+    };
+
+    const addColorField = () => {
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            colors: [...prevProduct.colors, { color: '', price: '' }],
+        }));
+    };
+
+    const isValidUrl = (string) => {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', name);
-        formData.append('category', category);
-        formData.append('tagline', tagline);
-        formData.append('description', description);
-        formData.append('price', price);
-        formData.append('stock', stock);
-        images.forEach((image, index) => {
-            formData.append(`images[${index}]`, image);
+
+        // Append product data
+        formData.append('name', product.name);
+        formData.append('category', JSON.stringify(product.category)); // Ensure categories are correctly stringified
+        formData.append('tagline', product.tagline);
+        formData.append('description', product.description);
+        formData.append('price', product.price);
+        formData.append('stock', product.stock);
+        formData.append('sizes', JSON.stringify(product.sizes));
+        formData.append('colors', JSON.stringify(product.colors));
+
+        if(productId){
+            const existingImages = product.all_images
+                .map((image, index) => isValidUrl(image) ? { image, index } : null)
+                .filter(item => item !== null);
+
+            formData.append('existingImages', JSON.stringify(existingImages));
+        }
+        // Append all_images
+        product.all_images.forEach((image, index) => {
+            formData.append('all_images', image);
         });
-        formData.append('sizes', JSON.stringify(sizes));
-        formData.append('colors', JSON.stringify(colors));
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/products/addProduct`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            if (response.status === 200) {
-                console.log('Product created successfully');
+            if (productId) {
+                await axios.put(`${process.env.REACT_APP_SERVER_URL}/product/editProduct/${productId}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             } else {
-                console.error('Failed to create product');
+                await axios.post(`${process.env.REACT_APP_SERVER_URL}/product/createProduct`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             }
+            navigate('/admin');
         } catch (error) {
-            console.error('Error creating product:', error);
+            console.error('Error saving product:', error);
         }
     };
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Create New Product</h1>
+            <h1 className="text-2xl font-bold mb-4">{productId ? 'Edit Product' : 'Add New Product'}</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Name</label>
                     <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        name="name"
+                        value={product.name}
+                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                         required
                     />
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Category</label>
-                    <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                        required
-                    >
-                        <option value="">Select a category</option>
-                        {Categories.map((category, index) => (
-                            <option key={index} value={category.name}>{category.name}</option>
+                    <div className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        {Categories?.map((category) => (
+                            <div key={category.name} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    value={category.name}
+                                    checked={product.category.includes(category.name)}
+                                    onChange={handleCategoryChange}
+                                    className="mr-2"
+                                />
+                                <label>{category.name}</label>
+                            </div>
                         ))}
-                    </select>
+                    </div>
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Tagline</label>
                     <input
                         type="text"
-                        value={tagline}
-                        onChange={(e) => setTagline(e.target.value)}
+                        name="tagline"
+                        value={product.tagline}
+                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                         required
                     />
@@ -120,8 +195,9 @@ const EditProduct = () => {
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        name="description"
+                        value={product.description}
+                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                         required
                     />
@@ -130,8 +206,9 @@ const EditProduct = () => {
                     <label className="block text-sm font-medium text-gray-700">Price</label>
                     <input
                         type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
+                        name="price"
+                        value={product.price}
+                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                         required
                     />
@@ -140,8 +217,9 @@ const EditProduct = () => {
                     <label className="block text-sm font-medium text-gray-700">Stock</label>
                     <input
                         type="number"
-                        value={stock}
-                        onChange={(e) => setStock(e.target.value)}
+                        name="stock"
+                        value={product.stock}
+                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
                         required
                     />
@@ -153,15 +231,14 @@ const EditProduct = () => {
                         multiple
                         onChange={handleImageChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                        required
                     />
                     <div className="mt-4">
-                        {images.length > 0 && (
+                        {product.all_images.length > 0 && (
                             <div className="carousel">
-                                {images.map((image, index) => (
+                                {product.all_images.map((image, index) => (
                                     <div key={index} className="relative inline-block mr-2">
                                         <img
-                                            src={URL.createObjectURL(image)}
+                                            src={isValidUrl(image) ? image : URL.createObjectURL(image)}
                                             alt={`Product ${index}`}
                                             className="h-32 w-32 object-cover rounded-md"
                                         />
@@ -178,16 +255,16 @@ const EditProduct = () => {
                                         {index > 0 && (
                                             <button
                                                 type="button"
-                                                onClick={() => swapImages(index, index - 1)}
+                                                onClick={() => swapall_images(index, index - 1)}
                                                 className="absolute bottom-0 left-0 bg-blue-500 text-white rounded-full p-1"
                                             >
                                                 &larr;
                                             </button>
                                         )}
-                                        {index < images.length - 1 && (
+                                        {index < product.all_images.length - 1 && (
                                             <button
                                                 type="button"
-                                                onClick={() => swapImages(index, index + 1)}
+                                                onClick={() => swapall_images(index, index + 1)}
                                                 className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-1"
                                             >
                                                 &rarr;
@@ -201,7 +278,7 @@ const EditProduct = () => {
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Sizes</label>
-                    {sizes.map((size, index) => (
+                    {product.sizes?.map((size, index) => (
                         <div key={index} className="flex space-x-2 mt-1">
                             <input
                                 type="text"
@@ -227,7 +304,7 @@ const EditProduct = () => {
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Colors</label>
-                    {colors.map((color, index) => (
+                    {product.colors?.map((color, index) => (
                         <div key={index} className="flex space-x-2 mt-1">
                             <input
                                 type="text"
@@ -252,7 +329,7 @@ const EditProduct = () => {
                     </button>
                 </div>
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                    Create Product
+                    {productId ? 'Update Product' : 'Create Product'}
                 </button>
             </form>
         </div>

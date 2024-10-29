@@ -114,15 +114,15 @@ const SoapProductDescription = ({product}) => {
                     >
                         {/*<div className='align-middle py-auto'>*/}
                         {/*    <img src={product.main_image1} alt="image1" className="object-scale-down" />*/}
-                            <LensDemo image ={product.main_image1}/>
+                        {/*    <LensDemo image ={product.main_image1}/>*/}
                         {/*</div>*/}
                         {/*<div className='align-middle py-auto'>*/}
-                            <LensDemo image ={product.main_image2}/>
+                        {/*    <LensDemo image ={product.main_image2}/>*/}
                             {/*<img src={product.main_image2} alt="image2" className="object-scale-down" />*/}
                         {/*</div>*/}
                         {
-                            product.all_images?.map(()=>{
-                                return
+                            product.all_images?.map((images)=>{
+                                return <LensDemo image ={images}/>
                             })
                         }
                     </Carousel>
@@ -138,18 +138,11 @@ const SoapProductDescription = ({product}) => {
                         dynamicHeight={false}
                         className="w-[100%] h-[35vh] align-middle object-scale-down"
                     >
-                        <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
-                        </div>
-                        <div className='align-middle py-auto'>
-                            <img src="https://zouk.co.in/cdn/shop/articles/image_18.png?v=1653218195" alt="image1" className="object-scale-down" />
-                        </div>
-                        <div>
-                            <img src={Poster11} alt="image1" className=" object-contain" />
-                        </div>
-                        <div>
-                            <img src={Poster11} alt="image1" className="object-contain" />
-                        </div>
+                        {
+                            product.all_images?.map((images)=>{
+                                return <LensDemo image ={images}/>
+                            })
+                        }
                     </Carousel>
                 </div>
                 <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 md:overflow-y-auto  md:h-[70vh] xl:h-[100vh]">
