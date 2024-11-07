@@ -1,9 +1,10 @@
-"use client";;
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+// "use client";;
+import { cn } from "../../../lib/utils";
+// import Link from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import {Link, useNavigate} from "react-router-dom";
 
 const SidebarContext = createContext(undefined);
 
@@ -126,9 +127,11 @@ export const SidebarLink = ({
                                 ...props
                             }) => {
     const { open, animate } = useSidebar();
+    const navigate = useNavigate()
     return (
         (<Link
             href={link.href}
+            onClick={()=>{console.log(link.href);navigate(`../${link.href}`);window.location.reload();}}
             className={cn("flex items-center justify-start gap-2  group/sidebar py-2", className)}
             {...props}>
             {link.icon}

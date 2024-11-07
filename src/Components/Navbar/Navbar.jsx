@@ -17,10 +17,7 @@ export const Navbar = ({ show, setShow }) => {
   const [droppeddown, setDroppeddown] = useState(false);
   const [dropdown2, setDropdown2] = useState(false);
   const [droppeddown2, setDroppeddown2] = useState(false);
-  // const handleClick=()=>{
-  //   console.log("clicked",clicked)
-  //   setClicked(!clicked);
-  // }
+
 
 
   let navigate = useNavigate();
@@ -56,7 +53,7 @@ export const Navbar = ({ show, setShow }) => {
     <div className=''>
 
       <div className='h-[5vh] bg-[#FFC4C4] text-white py-[1vh] '><h1 className="drop-shadow-xl  text-center">Free shipping for orders over Rs.3000 and more</h1> </div>
-      <div className='flex h-[12vh]  lg:h-[17vh]  content-center justify-center align-middle'>
+      <div className='flex h-[12vh]  lg:h-[17vh]  content-center justify-center align-middle '>
 
         <ul class="flex "><li>
           <a target="_blank" rel="noopener" href="https://www.instagram.com/tilottamabyarchana/" title="Tillotama By Archana on Instagram">
@@ -162,24 +159,43 @@ export const Navbar = ({ show, setShow }) => {
             <div class="hidden w-full md:block md:w-auto pr-" id="navbar-dropdown">
               <ul class="flex flex-row font-medium text-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 ">
                 <li className='basis-[10%]'>
-                  <Link to="/" class="group block py-2 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 " aria-current="page">Home
-                    <span class="block max-w-0 lg:ml-[25%] lg:mr-[25%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+                  <Link to="/"
+                        class="group block py-2 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-white md:p-0 "
+                        aria-current="page">Home
+                    <span
+                        className="block max-w-0 lg:ml-[25%] lg:mr-[25%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
                   </Link>
                 </li>
                 <li className='basis-[10%]'>
-                  <button href="#dest" onMouseOver={() => { setDropdown(true) }} onMouseOut={() => { setDropdown(false) }} id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" data-dropdown-trigger="hover" class="group flex items-center justify-between w-full py-2 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-white md:p-0 md:w-auto " className={dropdown || droppeddown ? `text-white` : `text-white`}>Products
-                    <span class={dropdown || droppeddown ? `block max-w-full transition-all duration-500 h-0.5 bg-white` : `max-w-0 block transition-all duration-500 h-0.5 bg-white`}></span>
+                  <button href="#dest" onMouseOver={() => {
+                    setDropdown(true)
+                  }} onMouseOut={() => {
+                    setDropdown(false)
+                  }} id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" data-dropdown-trigger="hover"
+                          className="group flex items-center justify-between w-full py-2 pl-3 pr-4  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-white md:p-0 md:w-auto "
+                          className={dropdown || droppeddown ? `text-white` : `text-white`}>Products
+                    <span
+                        className={dropdown || droppeddown ? `block max-w-full transition-all duration-500 h-0.5 bg-white` : `max-w-0 block transition-all duration-500 h-0.5 bg-white`}></span>
                   </button>
-                  <div onMouseOver={() => { setDroppeddown(true) }} onMouseOut={() => { setDroppeddown(false) }} id="dropdownNavbar" class={dropdown || droppeddown ? `absolute translate-x-[-10px] bg-white z-10 font-normal  divide-y divide-gray-100  shadow-md w-44 ` : `hidden`}>
+                  <div onMouseOver={() => {
+                    setDroppeddown(true)
+                  }} onMouseOut={() => {
+                    setDroppeddown(false)
+                  }} id="dropdownNavbar"
+                       class={dropdown || droppeddown ? `absolute translate-x-[-10px] bg-white z-10 font-normal  divide-y divide-gray-100  shadow-md w-44 ` : `hidden`}>
                     <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
                       {Categories.map((item, index) => {
                         return (
-                          <li>
-                            <Link to={`/allproducts/${item.name.toLocaleLowerCase()}/newArrivals`} class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
-                          </li>
+                            <li>
+                              <Link to={`/allproducts/${item.name.toLocaleLowerCase()}/newArrivals`}
+                                    class="block px-4 py-2 hover:bg-gray-100">{item.name}</Link>
+                            </li>
                         )
                       })}
-
+                      <li>
+                        <Link to={`/allproducts/all/newArrivals`}
+                              class="block px-4 py-2 hover:bg-gray-100">All</Link>
+                      </li>
                     </ul>
                     {/* <div class="py-1">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
@@ -187,38 +203,74 @@ export const Navbar = ({ show, setShow }) => {
                   </div>
                 </li>
                 <li className='basis-[10%]'>
-                  <Link to="/" class="group block py-2  text-white rounded hover:bg-gray-100 md:hover:bg-transparent  md:border-0  md:p-0">About Us
-                    <span class="block max-w-0 lg:ml-[20%] lg:mr-[20%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span></Link>
+                  <Link to="/"
+                        class="group block py-2  text-white rounded hover:bg-gray-100 md:hover:bg-transparent  md:border-0  md:p-0">About
+                    Us
+                    <span
+                        className="block max-w-0 lg:ml-[20%] lg:mr-[20%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span></Link>
                 </li>
                 <li className='basis-[10%]'>
-                  <a href="#" class="block group text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md: md:p-0">Discounts/Offers
-                    <span class="block max-w-0 group-hover:max-w-[100%] transition-all duration-500 h-0.5 bg-white"></span>
+                  <a href="#"
+                     class="block group text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md: md:p-0">Discounts/Offers
+                    <span
+                        className="block max-w-0 group-hover:max-w-[100%] transition-all duration-500 h-0.5 bg-white"></span>
                   </a>
                 </li>
                 <li className='basis-[10%] '>
-                  <button onClick={() => { handleTestimonial() }} class="block  group text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md: md:p-0">Testimonials
-                    <span class="block max-w-0 lg:ml-[20%] lg:mr-[20%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+                  <button onClick={() => {
+                    handleTestimonial()
+                  }}
+                          className="block  group text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md: md:p-0">Testimonials
+                    <span
+                        className="block max-w-0 lg:ml-[20%] lg:mr-[20%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
                   </button>
                 </li>
-                <li className='basis-[35%]'>
-                </li>
-                <li className='basis-[20%]'>
-                  <form>
-                    <div class="relative">
-                    {droppeddown2 || dropdown2 ?<button onClick={() => { console.log("clicked") }} type="submit" class="absolute inset-y-0 left-0 flex items-center pl-3 translate-y-3">
-                        <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                      </button>
-                    :
-                     <><button onClick={() => { console.log("clicked") }} type="submit" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
-                        <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                      </button>
-                      <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                {user.admin ? <>
+                      <li className='basis-[4%] '>
+                        <button onClick={() => {
+                          navigate("/admin");
+                        }}
+                                className="block  group text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md: md:p-0">Admin
+                          <span
+                              className="block max-w-0 lg:ml-[20%] lg:mr-[20%] group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+                        </button>
+                      </li>
+                      <li className='basis-[32%]'>
+                      </li>
+                    </> :
+                    <li className='basis-[35%]'>
+                    </li>
 
-                        <input type="search" id="default-search" class="z-50 flex underline w-full p-1 pl-10 text-sm text-white placeholder-white rounded-lg bg-[#EE6983] " placeholder="______________________" required /></>}
+                }
+                <li className='basis-[20%]'>
+                <form>
+                    <div class="relative">
+                      {droppeddown2 || dropdown2 ? <button onClick={() => {
+                            console.log("clicked")
+                          }} type="submit" className="absolute inset-y-0 left-0 flex items-center pl-3 translate-y-3">
+                            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="none" viewBox="0 0 20 20">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                          </button>
+                          :
+                          <>
+                            <button onClick={() => {
+                              console.log("clicked")
+                            }} type="submit" className="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                              <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                   fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                              </svg>
+                            </button>
+                            <label for="default-search"
+                                   class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+
+                            <input type="search" id="default-search"
+                                   class="z-50 flex underline w-full p-1 pl-10 text-sm text-white placeholder-white rounded-lg bg-[#EE6983] "
+                                   placeholder="______________________" required/></>}
                       {/* <button type="submit" class="text-white absolute right-[-40%] bottom-0.5 bg-[] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1   ">Search</button> */}
                     </div>
                   </form>

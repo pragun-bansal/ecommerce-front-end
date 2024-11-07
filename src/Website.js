@@ -1,4 +1,3 @@
-
 import './App.css';
 import { Navbar } from './Components/Navbar/Navbar';
 import {
@@ -16,62 +15,49 @@ import ProductPage from './PAGES/Product/ProductPage';
 import WishListPage from './PAGES/WishList/WishListPage';
 import Cart from './Components/Cart/Cart';
 import { useEffect, useState } from 'react';
-import {ToastContainer,toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { cartActions } from './Redux/Slices/CartSlice';
 import ProfilePage from './PAGES/Profile Page/ProfilePage';
 import AdminPage from './PAGES/AdminPanel/AdminPage';
-import EditProduct from './PAGES/AdminPanel/EditProduct'
-
-
-
+import EditProduct from './PAGES/AdminPanel/EditProduct';
 
 function Website() {
-
-
-
-
-  const user= useSelector((state)=>state.User);
-// if(user && user._id){ 
-//   // console.log(user);
-//   localStorage.setItem("user",JSON.stringify(user));}
-
+  const user = useSelector((state) => state.User);
   const [show, setShow] = useState(false);
 
   return (
-    <Router>
-    <div className="App scroll-smooth bg-[#] z-10">
-    <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        theme="dark"
-      />
-      <Navbar show={show} setShow={setShow} />
-      <Cart  show={show} setShow={setShow}/>
-    </div>
-    <Routes>
-    <Route exact path="/" element={<Home />} />
-    <Route exact path="/allproducts/:category/:sortBy" element={<AllProductsPage />} />
-    <Route path="/products/:productId" element={<ProductPage />} />
-    <Route exact path="/login" element={user && user.data?<Home/>:<LoginHome />} />
-    <Route exact path="/wishlist" element={<WishListPage />} />
-    <Route exact path="/profile" element={<ProfilePage />} />
-      <Route exact path={"/admin"} element={<AdminPage />} />
-      <Route exact path={"/admin/edit-product/:productId"} element={<EditProduct />} />
-      <Route exact path={"/admin/add-product/:productId"} element={<EditProduct />} />
-      <Route path="/admin/edit-product" element={<EditProduct />} />
-      {/*<Route exact path={{pathname:"/admin",state:{admin:true}}} element={<AdminPage />} />*/}
-      {/*<Route exact path={{pathname:"/admin/edit-product/:productId",state:{admin:true}}} element={<EditProduct />} />*/}
-    </Routes>
-    <Footer />
-    </Router>
+      <Router>
+        <div className="App scroll-smooth bg-[#] z-10">
+          <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              draggable
+              theme="dark"
+          />
+          <Navbar className="sticky top-0 z-50" show={show} setShow={setShow} />
+          <Cart show={show} setShow={setShow} />
+        </div>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/allproducts/:category/:sortBy" element={<AllProductsPage />} />
+          <Route path="/products/:productId" element={<ProductPage />} />
+          <Route exact path="/login" element={user && user.data ? <Home /> : <LoginHome />} />
+          <Route exact path="/wishlist" element={<WishListPage />} />
+          <Route exact path="/profile" element={<ProfilePage />} />
+          <Route exact path="/admin" element={<AdminPage />} />
+          <Route exact path="/admin/menu/:menu" element={<AdminPage />} />
+          <Route exact path="/admin/edit-product/:productId" element={<EditProduct />} />
+          <Route path="/admin/edit-product" element={<EditProduct />} />
+        </Routes>
+        <Footer />
+      </Router>
   );
 }
 

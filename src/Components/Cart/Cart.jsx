@@ -102,7 +102,7 @@ const Cart = ({ show, setShow }) => {
                                                 <div className="md:flex items-center mt-14 py-8 border-t border-gray-200">
                                                     <div className="w-1/4" onClick={() => setShow(false)}>
                                                         <Link to={`/products/${product.productId._id}`}>
-                                                            <img src={product.productId.main_image1} alt className="w-full h-full object-center object-cover" />
+                                                            <img src={product.productId.all_images[0]} alt className="w-full h-full object-center object-cover" />
                                                         </Link>
                                                     </div>
                                                     <div className="md:pl-3 md:w-3/4">

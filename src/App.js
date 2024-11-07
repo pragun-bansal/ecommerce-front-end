@@ -12,6 +12,7 @@ function App() {
 
 
   const user= useSelector((state)=>state.User);
+  const allProducts = useSelector((state) => state.AllProducts);
 
   const [show, setShow] = useState(false);
 

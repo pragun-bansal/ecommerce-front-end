@@ -22,7 +22,7 @@ const ProductCard = ({ product }) => {
                 onMouseLeave={()=>setHover(false)}
             />
             <p className="mt-2 font-bold uppercase text-gray-800">{product.name}</p>
-            <p className="mt-1 text-gray-600">{product.description}</p>
+            <p className="mt-1 text-gray-600">{product.tagline}</p>
             <p className="mt-1 font-bold text-gray-800">₹{product.price}</p>
             <button
                 className="absolute top-2 right-2 rounded-full h-10 w-10 bg-white p-2 shadow-md hover:bg-gray-100 transition-colors"

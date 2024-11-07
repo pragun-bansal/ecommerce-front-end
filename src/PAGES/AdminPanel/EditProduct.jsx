@@ -14,8 +14,8 @@ const EditProduct = () => {
         price: '',
         stock: '',
         all_images: [],
-        sizes: [{ size: '', price: '' }],
-        colors: [{ color: '', price: '' }],
+        sizes: [],
+        colors: [],
     });
 
     useEffect(() => {
@@ -44,8 +44,11 @@ const EditProduct = () => {
             const newCategories = checked
                 ? [...prevProduct.category, value]
                 : prevProduct.category.filter((category) => category !== value);
+            console.log(newCategories)
             return { ...prevProduct, category: newCategories };
+
         });
+        console.log(product.category)
     };
 
     const handleImageChange = (e) => {
@@ -91,6 +94,20 @@ const EditProduct = () => {
         setProduct((prevProduct) => ({
             ...prevProduct,
             colors: [...prevProduct.colors, { color: '', price: '' }],
+        }));
+    };
+
+    const deleteSizeField = (index) => {
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            sizes: prevProduct.sizes.filter((_, i) => i !== index),
+        }));
+    };
+
+    const deleteColorField = (index) => {
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            colors: prevProduct.colors.filter((_, i) => i !== index),
         }));
     };
 
@@ -286,7 +303,6 @@ const EditProduct = () => {
                                 onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
                                 placeholder="Size"
                                 className="block w-1/2 border border-gray-300 rounded-md shadow-sm"
-                                required
                             />
                             <input
                                 type="number"
@@ -294,8 +310,14 @@ const EditProduct = () => {
                                 onChange={(e) => handleSizeChange(index, 'price', e.target.value)}
                                 placeholder="Price"
                                 className="block w-1/2 border border-gray-300 rounded-md shadow-sm"
-                                required
                             />
+                            <button
+                                type="button"
+                                onClick={() => deleteSizeField(index)}
+                                className="text-red-500"
+                            >
+                                Delete
+                            </button>
                         </div>
                     ))}
                     <button type="button" onClick={addSizeField} className="mt-2 text-blue-500">
@@ -322,6 +344,13 @@ const EditProduct = () => {
                                 className="block w-1/2 border border-gray-300 rounded-md shadow-sm"
                                 required
                             />
+                            <button
+                                type="button"
+                                onClick={() => deleteColorField(index)}
+                                className="text-red-500"
+                            >
+                                Delete
+                            </button>
                         </div>
                     ))}
                     <button type="button" onClick={addColorField} className="mt-2 text-blue-500">
