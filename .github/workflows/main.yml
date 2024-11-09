@@ -1,0 +1,17 @@
+name: Scheduled GET Request
+
+on:
+  schedule:
+    # This cron expression runs the workflow at 3:00 AM UTC every day
+    - cron: '*/5 * * * *'
+
+jobs:
+  get-api-request:
+    runs-on: ubuntu-latest
+    steps:
+      # Step to make the GET request
+      - name: Make GET API Request and Log Response
+        run: |
+          response=$(curl -s -X GET https://igts-back.onrender.com/api/blog/getallblogs/0)
+          echo "Response: $response"
+      
