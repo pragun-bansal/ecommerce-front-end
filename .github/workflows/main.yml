@@ -4,12 +4,13 @@ on:
   schedule:
     # This cron expression runs the workflow every 5 minutes
     - cron: '*/5 * * * *'
+  workflow_dispatch: # Allows manual trigger of the workflow
 
 jobs:
   get-product-api-request:
     runs-on: ubuntu-latest
     steps:
-      # Step to make the GET request
+      # Step to make the GET request and log the response
       - name: Make GET API Request and Log Response
         run: |
           response=$(curl -s -X GET https://tilottama-backend.onrender.com/product/)
